@@ -1,6 +1,5 @@
 {
   "buildCommand": "cd apps/next15 && pnpm build",
   "installCommand": "pnpm install",
-  "outputDirectory": "apps/next15/.next",
   "framework": null
 }
