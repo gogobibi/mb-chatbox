@@ -1,5 +1,6 @@
 {
-  "buildCommand": "pnpm --filter next15 build",
+  "buildCommand": "cd apps/next15 && pnpm build",
   "installCommand": "pnpm install",
-  "outputDirectory": "apps/next15/.next"
+  "outputDirectory": "apps/next15/.next",
+  "framework": null
 }
