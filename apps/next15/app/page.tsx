@@ -5,8 +5,8 @@ import { Badge } from '@/components/ui/badge';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <main className="w-full max-w-[500px] bg-background rounded-lg shadow-xl p-6">
+    <div className="flex h-screen items-center justify-center">
+      <main className="flex h-full w-full max-w-[500px] flex-col bg-background shadow-xl p-6">
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-foreground">채팅</h1>
