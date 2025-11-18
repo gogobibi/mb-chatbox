@@ -1,118 +1,50 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
-
-interface Message {
-  id: number;
-  text: string;
-  sender: 'user' | 'bot';
-  timestamp: Date;
-}
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 export default function Home() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      text: '안녕하세요! 무엇을 도와드릴까요?',
-      sender: 'bot',
-      timestamp: new Date(),
-    },
-  ]);
-  const [inputText, setInputText] = useState('');
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!inputText.trim()) return;
-
-    const newMessage: Message = {
-      id: messages.length + 1,
-      text: inputText,
-      sender: 'user',
-      timestamp: new Date(),
-    };
-
-    setMessages([...messages, newMessage]);
-    setInputText('');
-
-    // 간단한 봇 응답 시뮬레이션
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: messages.length + 2,
-        text: '메시지를 받았습니다. 더 도와드릴 것이 있으신가요?',
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 1000);
-  };
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-zinc-900">
-      <main className="flex h-screen w-full max-w-4xl flex-col bg-white dark:bg-zinc-950 shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <main className="w-full max-w-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-6 py-4">
-          <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-            MB Chatbox
-          </h1>
-          <Link
-            href="/chat"
-            className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 transition-colors"
-          >
-            채팅방으로 이동
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-foreground">채팅</h1>
+        </div>
+
+        {/* Chat List */}
+        <div className="space-y-2">
+          <Link href="/chat">
+            <Card className="cursor-pointer transition-colors hover:bg-accent">
+              <CardContent className="flex items-center gap-4 p-4">
+                {/* Avatar */}
+                <Avatar className="h-14 w-14">
+                  <AvatarImage
+                    src="https://images.unsplash.com/photo-1762325658409-5d8aa0e43261?q=80&w=1072&auto=format&fit=crop"
+                    alt="민지"
+                  />
+                  <AvatarFallback>민지</AvatarFallback>
+                </Avatar>
+
+                {/* Chat Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-1">
+                    <h2 className="font-semibold text-foreground">민지</h2>
+                    <span className="text-xs text-muted-foreground">오후 2:30</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground truncate">
+                      안녕! 오늘 기분이 어때?
+                    </p>
+                    <Badge variant="default" className="ml-2 shrink-0">
+                      1
+                    </Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </Link>
         </div>
-
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${
-                message.sender === 'user' ? 'justify-end' : 'justify-start'
-              }`}
-            >
-              <div
-                className={`max-w-[70%] rounded-lg px-4 py-2 ${
-                  message.sender === 'user'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50'
-                }`}
-              >
-                <p className="text-sm">{message.text}</p>
-                <span className="text-xs opacity-70 mt-1 block">
-                  {message.timestamp.toLocaleTimeString('ko-KR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Input Area */}
-        <form
-          onSubmit={handleSendMessage}
-          className="border-t border-zinc-200 dark:border-zinc-800 px-6 py-4"
-        >
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="메시지를 입력하세요..."
-              className="flex-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2 text-sm text-zinc-900 dark:text-zinc-50 placeholder-zinc-500 dark:placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="submit"
-              className="rounded-lg bg-blue-500 px-6 py-2 text-sm font-medium text-white hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              전송
-            </button>
-          </div>
-        </form>
       </main>
     </div>
   );
