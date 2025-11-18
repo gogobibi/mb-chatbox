@@ -96,7 +96,8 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex h-screen flex-col bg-background">
+    <div className="flex h-screen items-center justify-center">
+      <div className="flex h-screen w-full max-w-[500px] flex-col bg-background shadow-xl">
       <div className="flex items-center gap-3 border-b border-border px-4 py-3">
         <Link href="/">
           <Button variant="ghost" size="icon">
@@ -165,6 +166,7 @@ export default function ChatPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
