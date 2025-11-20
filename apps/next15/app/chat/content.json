@@ -1,23 +1,27 @@
 {
   "1": {
     "questionId": 1,
-    "question": "안녕! 오늘 기분이 어때?",
+    "question": "브렛, 혹시 지금 어디야?",
     "answerOptions": [
       {
         "text": "너무 좋아!",
-        "nextQuestionId": 2
+        "nextQuestionId": 2,
+        "loveAmount": 15
       },
       {
         "text": "그냥 그래",
-        "nextQuestionId": 3
+        "nextQuestionId": 3,
+        "loveAmount": 5
       },
       {
         "text": "좀 피곤해",
-        "nextQuestionId": 4
+        "nextQuestionId": 4,
+        "loveAmount": 3
       },
       {
         "text": "별로 말하고 싶지 않아",
-        "nextQuestionId": 10
+        "nextQuestionId": 10,
+        "loveAmount": -3
       }
     ]
   },
@@ -27,15 +31,18 @@
     "answerOptions": [
       {
         "text": "친구들이랑 놀 거야",
-        "nextQuestionId": 5
+        "nextQuestionId": 5,
+        "loveAmount": 12
       },
       {
         "text": "집에서 쉴 거야",
-        "nextQuestionId": 6
+        "nextQuestionId": 6,
+        "loveAmount": 8
       },
       {
         "text": "네가 왜 궁금해?",
-        "nextQuestionId": 11
+        "nextQuestionId": 11,
+        "loveAmount": 0
       }
     ]
   },
@@ -45,15 +52,18 @@
     "answerOptions": [
       {
         "text": "일하고 공부하고",
-        "nextQuestionId": 5
+        "nextQuestionId": 5,
+        "loveAmount": 10
       },
       {
         "text": "그냥 평범하게",
-        "nextQuestionId": 6
+        "nextQuestionId": 6,
+        "loveAmount": 5
       },
       {
         "text": "말해야 돼?",
-        "nextQuestionId": 11
+        "nextQuestionId": 11,
+        "loveAmount": -2
       }
     ]
   },
@@ -63,15 +73,18 @@
     "answerOptions": [
       {
         "text": "일이 너무 많아서",
-        "nextQuestionId": 6
+        "nextQuestionId": 6,
+        "loveAmount": 8
       },
       {
         "text": "잠을 못 자서",
-        "nextQuestionId": 7
+        "nextQuestionId": 7,
+        "loveAmount": 7
       },
       {
         "text": "네 상관 아니잖아",
-        "nextQuestionId": 12
+        "nextQuestionId": 12,
+        "loveAmount": -5
       }
     ]
   },
@@ -81,15 +94,18 @@
     "answerOptions": [
       {
         "text": "운동이나 건강",
-        "nextQuestionId": 7
+        "nextQuestionId": 7,
+        "loveAmount": 13
       },
       {
         "text": "영화나 드라마",
-        "nextQuestionId": 8
+        "nextQuestionId": 8,
+        "loveAmount": 12
       },
       {
         "text": "너랑 얘기하기 싫어",
-        "nextQuestionId": 13
+        "nextQuestionId": 13,
+        "loveAmount": -4
       }
     ]
   },
@@ -99,15 +115,18 @@
     "answerOptions": [
       {
         "text": "친구 만난 거",
-        "nextQuestionId": 8
+        "nextQuestionId": 8,
+        "loveAmount": 11
       },
       {
         "text": "맛있는 거 먹은 거",
-        "nextQuestionId": 9
+        "nextQuestionId": 9,
+        "loveAmount": 10
       },
       {
         "text": "왜 자꾸 물어봐?",
-        "nextQuestionId": 13
+        "nextQuestionId": 13,
+        "loveAmount": -1
       }
     ]
   },
@@ -117,15 +136,18 @@
     "answerOptions": [
       {
         "text": "여행 가고 싶어",
-        "nextQuestionId": 9
+        "nextQuestionId": 9,
+        "loveAmount": 14
       },
       {
         "text": "새로운 취미 찾고 싶어",
-        "nextQuestionId": 9
+        "nextQuestionId": 9,
+        "loveAmount": 13
       },
       {
         "text": "그만 물어봐",
-        "nextQuestionId": 14
+        "nextQuestionId": 14,
+        "loveAmount": -2
       }
     ]
   },
@@ -135,15 +157,18 @@
     "answerOptions": [
       {
         "text": "수고했어!",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": 15
       },
       {
         "text": "재밌었어",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": 14
       },
       {
         "text": "이제 그만",
-        "nextQuestionId": 14
+        "nextQuestionId": 14,
+        "loveAmount": 2
       }
     ]
   },
@@ -153,15 +178,18 @@
     "answerOptions": [
       {
         "text": "나도!",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": 15
       },
       {
         "text": "고마워",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": 12
       },
       {
         "text": "됐어",
-        "nextQuestionId": 14
+        "nextQuestionId": 14,
+        "loveAmount": 1
       }
     ]
   },
@@ -171,11 +199,13 @@
     "answerOptions": [
       {
         "text": "미안, 기분이 안 좋아서",
-        "nextQuestionId": 4
+        "nextQuestionId": 4,
+        "loveAmount": 6
       },
       {
         "text": "그냥 좀 내버려 둬",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": -4
       }
     ]
   },
@@ -185,11 +215,13 @@
     "answerOptions": [
       {
         "text": "알겠어, 괜찮아",
-        "nextQuestionId": 6
+        "nextQuestionId": 6,
+        "loveAmount": 9
       },
       {
         "text": "그래도 부담스러워",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": -2
       }
     ]
   },
@@ -199,11 +231,13 @@
     "answerOptions": [
       {
         "text": "응, 조금만 쉴게",
-        "nextQuestionId": 7
+        "nextQuestionId": 7,
+        "loveAmount": 7
       },
       {
         "text": "그래, 나중에 얘기하자",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": 3
       }
     ]
   },
@@ -213,11 +247,13 @@
     "answerOptions": [
       {
         "text": "아니야, 괜찮아",
-        "nextQuestionId": 9
+        "nextQuestionId": 9,
+        "loveAmount": 10
       },
       {
         "text": "그래, 좀 그랬어",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": 0
       }
     ]
   },
@@ -227,11 +263,13 @@
     "answerOptions": [
       {
         "text": "응",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": 4
       },
       {
         "text": "...",
-        "nextQuestionId": null
+        "nextQuestionId": null,
+        "loveAmount": 0
       }
     ]
   }

@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
-export function MainPage() {
+interface MainPageProps {
+  previewMessage: string;
+}
+
+export function MainPage({ previewMessage }: MainPageProps) {
   return (
     <div className="flex h-screen items-center justify-center bg-black">
       <main className="flex h-full w-full max-w-[500px] flex-col bg-imessage-bg shadow-xl">
@@ -19,17 +23,17 @@ export function MainPage() {
               {/* Avatar */}
               <Avatar className="h-[52px] w-[52px] shrink-0">
                 <AvatarImage
-                  src="https://images.unsplash.com/photo-1762325658409-5d8aa0e43261?q=80&w=1072&auto=format&fit=crop"
-                  alt="민지"
+                  src="/m.jpg"
+                  alt="마르코"
                 />
-                <AvatarFallback>민지</AvatarFallback>
+                <AvatarFallback>마르코</AvatarFallback>
               </Avatar>
 
               {/* Chat Info */}
               <div className="flex-1 min-w-0 py-1">
                 <div className="flex items-baseline justify-between mb-1">
                   <h2 className="font-semibold text-[17px] text-imessage-text-dark">
-                    민지
+                    마르코
                   </h2>
                   <div className="flex items-center gap-2">
                     <span className="text-[15px] text-imessage-secondary">
@@ -41,7 +45,7 @@ export function MainPage() {
                   </div>
                 </div>
                 <p className="text-[15px] text-imessage-secondary truncate">
-                  안녕! 오늘 기분이 어때?
+                  {previewMessage}
                 </p>
               </div>
             </div>

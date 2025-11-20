@@ -7,6 +7,7 @@ interface Question {
   answerOptions: Array<{
     text: string;
     nextQuestionId: number | null;
+    loveAmount: number;
   }>;
 }
 

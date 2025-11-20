@@ -8,10 +8,12 @@ import { IPhoneChatBubbleYou } from '@/components/chat/iphone-chat-bubble-you';
 import { IPhoneChatBubbleMe } from '@/components/chat/iphone-chat-bubble-me';
 import { IPhoneChatOption } from '@/components/chat/iphone-chat-option';
 import { TypingIndicator } from '@/components/chat/typing-indicator';
+import { LoveMeter } from '@/components/chat/love-meter';
 
 interface AnswerOption {
   text: string;
   nextQuestionId: number | null;
+  loveAmount: number;
 }
 
 interface Question {
@@ -31,8 +33,9 @@ type ContentData = {
   [key: string]: Question;
 };
 
-const BOT_AVATAR = 'https://images.unsplash.com/photo-1762325658409-5d8aa0e43261?q=80&w=1072&auto=format&fit=crop';
-const USER_AVATAR = 'https://images.unsplash.com/photo-1761839257475-4ca368dae6c3?q=80&w=2070&auto=format&fit=crop';
+const BOT_AVATAR = '/m.jpg';
+const USER_AVATAR = '/b.png';
+const MAX_LOVE_SCORE = 150;
 
 interface ChatPageProps {
   contentData: ContentData;
@@ -52,6 +55,7 @@ export function ChatPage({ contentData }: ChatPageProps) {
   const [messageIdCounter, setMessageIdCounter] = useState(2);
   const [isTyping, setIsTyping] = useState(false);
   const [isWaitingForNextOptions, setIsWaitingForNextOptions] = useState(false);
+  const [loveScore, setLoveScore] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -61,6 +65,10 @@ export function ChatPage({ contentData }: ChatPageProps) {
   }, [messages, isTyping]);
 
   const handleAnswerClick = (option: AnswerOption) => {
+    // 애정도 업데이트
+    const newLoveScore = Math.max(0, loveScore + option.loveAmount);
+    setLoveScore(newLoveScore);
+
     // 사용자 메시지 추가
     const userMessage: Message = {
       id: messageIdCounter,
@@ -100,7 +108,7 @@ export function ChatPage({ contentData }: ChatPageProps) {
         setIsWaitingForNextOptions(false);
       }, 1000);
     } else {
-      // 대화 종료
+      // 대화 종료 - 로컬스토리지에 점수 저장 및 엔딩 페이지로 이동
       setTimeout(() => {
         setIsTyping(false);
         const endMessage: Message = {
@@ -113,6 +121,18 @@ export function ChatPage({ contentData }: ChatPageProps) {
         setCurrentQuestion(null);
         setMessageIdCounter((prev) => prev + 1);
         setIsWaitingForNextOptions(false);
+
+        // 로컬스토리지에 점수 저장
+        localStorage.setItem('currentFinalScore', newLoveScore.toString());
+        const bestScore = localStorage.getItem('bestFinalScore');
+        if (!bestScore || newLoveScore > parseInt(bestScore, 10)) {
+          localStorage.setItem('bestFinalScore', newLoveScore.toString());
+        }
+
+        // 1초 후 엔딩 페이지로 이동
+        setTimeout(() => {
+          window.location.href = `/end?score=${newLoveScore}`;
+        }, 1000);
       }, 500);
     }
   };
@@ -121,19 +141,23 @@ export function ChatPage({ contentData }: ChatPageProps) {
     <div className="flex h-screen items-center justify-center bg-black">
       <div className="flex h-screen w-full max-w-[500px] flex-col bg-imessage-bg shadow-xl">
         {/* Header */}
-        <div className="flex items-center justify-center h-[56px] border-b border-imessage-separator bg-imessage-bg/95 backdrop-blur-sm relative">
-          <Link href="/" className="absolute left-2">
-            <button className="flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-full transition-colors">
-              <ChevronLeft className="h-6 w-6 text-imessage-blue" />
-            </button>
-          </Link>
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={BOT_AVATAR} alt="민지" />
-              <AvatarFallback>민지</AvatarFallback>
-            </Avatar>
-            <span className="text-[17px] font-semibold text-imessage-text-dark">민지</span>
+        <div className="border-b border-imessage-separator bg-imessage-bg/95 backdrop-blur-sm">
+          <div className="flex items-center justify-center h-[56px] relative">
+            <Link href="/" className="absolute left-2">
+              <button className="flex items-center justify-center w-10 h-10 hover:bg-gray-100 rounded-full transition-colors">
+                <ChevronLeft className="h-6 w-6 text-imessage-blue" />
+              </button>
+            </Link>
+            <div className="flex items-center gap-2">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={BOT_AVATAR} alt="마르코" />
+                <AvatarFallback>마르코</AvatarFallback>
+              </Avatar>
+              <span className="text-[17px] font-semibold text-imessage-text-dark">마르코</span>
+            </div>
           </div>
+          {/* 애정도 프로그레스 바 */}
+          <LoveMeter currentScore={loveScore} maxScore={MAX_LOVE_SCORE} />
         </div>
 
         {/* Messages Area */}
@@ -146,7 +170,7 @@ export function ChatPage({ contentData }: ChatPageProps) {
                   message={message.text}
                   timestamp={message.timestamp}
                   avatarSrc={BOT_AVATAR}
-                  avatarAlt="민지"
+                  avatarAlt="마르코"
                 />
               ) : (
                 <IPhoneChatBubbleMe
@@ -154,14 +178,14 @@ export function ChatPage({ contentData }: ChatPageProps) {
                   message={message.text}
                   timestamp={message.timestamp}
                   avatarSrc={USER_AVATAR}
-                  avatarAlt="나"
+                  avatarAlt="브렛"
                 />
               )
             )}
 
             {/* Typing Indicator */}
             {isTyping && (
-              <TypingIndicator avatarSrc={BOT_AVATAR} avatarAlt="민지" />
+              <TypingIndicator avatarSrc={BOT_AVATAR} avatarAlt="마르코" />
             )}
           </div>
         </div>
