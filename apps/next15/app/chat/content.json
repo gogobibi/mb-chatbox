@@ -9,46 +9,228 @@
       },
       {
         "text": "그냥 그래",
-        "nextQuestionId": 2
+        "nextQuestionId": 3
       },
       {
         "text": "좀 피곤해",
-        "nextQuestionId": 2
+        "nextQuestionId": 4
+      },
+      {
+        "text": "별로 말하고 싶지 않아",
+        "nextQuestionId": 10
       }
     ]
   },
   "2": {
     "questionId": 2,
-    "question": "그렇구나! 주말에 뭐 할 계획이야?",
+    "question": "오! 좋아 보여서 다행이야! 주말 계획 있어?",
     "answerOptions": [
       {
+        "text": "친구들이랑 놀 거야",
+        "nextQuestionId": 5
+      },
+      {
         "text": "집에서 쉴 거야",
-        "nextQuestionId": 3
+        "nextQuestionId": 6
       },
       {
-        "text": "친구들 만날 거야",
-        "nextQuestionId": 3
-      },
-      {
-        "text": "아직 정하지 못했어",
-        "nextQuestionId": 3
+        "text": "네가 왜 궁금해?",
+        "nextQuestionId": 11
       }
     ]
   },
   "3": {
     "questionId": 3,
-    "question": "좋아! 요즘 가장 관심 있는 건 뭐야?",
+    "question": "그렇구나. 요즘 뭐 하면서 지내?",
+    "answerOptions": [
+      {
+        "text": "일하고 공부하고",
+        "nextQuestionId": 5
+      },
+      {
+        "text": "그냥 평범하게",
+        "nextQuestionId": 6
+      },
+      {
+        "text": "말해야 돼?",
+        "nextQuestionId": 11
+      }
+    ]
+  },
+  "4": {
+    "questionId": 4,
+    "question": "많이 힘들었구나. 무슨 일 있었어?",
+    "answerOptions": [
+      {
+        "text": "일이 너무 많아서",
+        "nextQuestionId": 6
+      },
+      {
+        "text": "잠을 못 자서",
+        "nextQuestionId": 7
+      },
+      {
+        "text": "네 상관 아니잖아",
+        "nextQuestionId": 12
+      }
+    ]
+  },
+  "5": {
+    "questionId": 5,
+    "question": "좋겠다! 요즘 관심 있는 거 있어?",
     "answerOptions": [
       {
         "text": "운동이나 건강",
-        "nextQuestionId": null
+        "nextQuestionId": 7
       },
       {
         "text": "영화나 드라마",
+        "nextQuestionId": 8
+      },
+      {
+        "text": "너랑 얘기하기 싫어",
+        "nextQuestionId": 13
+      }
+    ]
+  },
+  "6": {
+    "questionId": 6,
+    "question": "그렇구나. 최근에 기억에 남는 일 있어?",
+    "answerOptions": [
+      {
+        "text": "친구 만난 거",
+        "nextQuestionId": 8
+      },
+      {
+        "text": "맛있는 거 먹은 거",
+        "nextQuestionId": 9
+      },
+      {
+        "text": "왜 자꾸 물어봐?",
+        "nextQuestionId": 13
+      }
+    ]
+  },
+  "7": {
+    "questionId": 7,
+    "question": "오 좋아! 앞으로 하고 싶은 거 있어?",
+    "answerOptions": [
+      {
+        "text": "여행 가고 싶어",
+        "nextQuestionId": 9
+      },
+      {
+        "text": "새로운 취미 찾고 싶어",
+        "nextQuestionId": 9
+      },
+      {
+        "text": "그만 물어봐",
+        "nextQuestionId": 14
+      }
+    ]
+  },
+  "8": {
+    "questionId": 8,
+    "question": "재밌겠다! 마지막으로 하고 싶은 말 있어?",
+    "answerOptions": [
+      {
+        "text": "수고했어!",
         "nextQuestionId": null
       },
       {
-        "text": "음악 듣기",
+        "text": "재밌었어",
+        "nextQuestionId": null
+      },
+      {
+        "text": "이제 그만",
+        "nextQuestionId": 14
+      }
+    ]
+  },
+  "9": {
+    "questionId": 9,
+    "question": "멋지다! 대화 즐거웠어!",
+    "answerOptions": [
+      {
+        "text": "나도!",
+        "nextQuestionId": null
+      },
+      {
+        "text": "고마워",
+        "nextQuestionId": null
+      },
+      {
+        "text": "됐어",
+        "nextQuestionId": 14
+      }
+    ]
+  },
+  "10": {
+    "questionId": 10,
+    "question": "아... 미안, 기분 안 좋을 땐 그럴 수 있지.",
+    "answerOptions": [
+      {
+        "text": "미안, 기분이 안 좋아서",
+        "nextQuestionId": 4
+      },
+      {
+        "text": "그냥 좀 내버려 둬",
+        "nextQuestionId": null
+      }
+    ]
+  },
+  "11": {
+    "questionId": 11,
+    "question": "아 미안해, 그냥 친해지고 싶어서 물어봤어.",
+    "answerOptions": [
+      {
+        "text": "알겠어, 괜찮아",
+        "nextQuestionId": 6
+      },
+      {
+        "text": "그래도 부담스러워",
+        "nextQuestionId": null
+      }
+    ]
+  },
+  "12": {
+    "questionId": 12,
+    "question": "알겠어... 힘들 때는 혼자 있고 싶을 수 있지.",
+    "answerOptions": [
+      {
+        "text": "응, 조금만 쉴게",
+        "nextQuestionId": 7
+      },
+      {
+        "text": "그래, 나중에 얘기하자",
+        "nextQuestionId": null
+      }
+    ]
+  },
+  "13": {
+    "questionId": 13,
+    "question": "미안해... 내가 너무 많이 물어봤나 봐.",
+    "answerOptions": [
+      {
+        "text": "아니야, 괜찮아",
+        "nextQuestionId": 9
+      },
+      {
+        "text": "그래, 좀 그랬어",
+        "nextQuestionId": null
+      }
+    ]
+  },
+  "14": {
+    "questionId": 14,
+    "question": "알겠어. 대화해줘서 고마워!",
+    "answerOptions": [
+      {
+        "text": "응",
+        "nextQuestionId": null
+      },
+      {
+        "text": "...",
         "nextQuestionId": null
       }
     ]
