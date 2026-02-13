@@ -4,272 +4,201 @@
     "question": "브렛, 혹시 지금 어디야?",
     "answerOptions": [
       {
-        "text": "너무 좋아!",
+        "text": "금방 들어갈게, 먼저 자",
         "nextQuestionId": 2,
-        "loveAmount": 15
+        "loveAmount": 10
       },
       {
-        "text": "그냥 그래",
+        "text": "아직 친구랑 있어. 왜, 무슨 일 있어?",
         "nextQuestionId": 3,
         "loveAmount": 5
       },
       {
-        "text": "좀 피곤해",
-        "nextQuestionId": 4,
-        "loveAmount": 3
-      },
-      {
         "text": "별로 말하고 싶지 않아",
-        "nextQuestionId": 10,
-        "loveAmount": -3
+        "nextQuestionId": null,
+        "loveAmount": -10,
+        "endMessage" : "아... 알겠어 조심히 들어와"
       }
     ]
   },
   "2": {
     "questionId": 2,
-    "question": "오! 좋아 보여서 다행이야! 주말 계획 있어?",
+    "question": "무슨 일 있어?",
     "answerOptions": [
       {
-        "text": "친구들이랑 놀 거야",
-        "nextQuestionId": 5,
-        "loveAmount": 12
+        "text": "아니, 별일 없어",
+        "nextQuestionId": 6,
+        "loveAmount": 2
       },
       {
-        "text": "집에서 쉴 거야",
+        "text": "친구가 실연당했대! 내가 달래줘야지 어쩌겠어",
         "nextQuestionId": 6,
         "loveAmount": 8
       },
       {
-        "text": "네가 왜 궁금해?",
-        "nextQuestionId": 11,
-        "loveAmount": 0
+        "text": "그게 왜 궁금해?",
+        "nextQuestionId": null,
+        "loveAmount": -10,
+        "endMessage" : "아... 알겠어 조심히 들어와"
       }
     ]
   },
   "3": {
     "questionId": 3,
-    "question": "그렇구나. 요즘 뭐 하면서 지내?",
+    "question": "아니 별일 없어. 늦길래... 언제쯤 들어와?",
     "answerOptions": [
       {
-        "text": "일하고 공부하고",
-        "nextQuestionId": 5,
-        "loveAmount": 10
-      },
-      {
-        "text": "그냥 평범하게",
+        "text": "한참 걸릴 것 같아.",
         "nextQuestionId": 6,
-        "loveAmount": 5
+        "loveAmount": 3
       },
       {
-        "text": "말해야 돼?",
-        "nextQuestionId": 11,
-        "loveAmount": -2
+        "text": "나도 잘 모르겠어ㅠㅠ",
+        "nextQuestionId": 6,
+        "loveAmount": 3
+      },
+      {
+        "text": "설마 내가 보고 싶어서 묻는거야?",
+        "nextQuestionId": 4,
+        "loveAmount": 10
       }
     ]
   },
   "4": {
     "questionId": 4,
-    "question": "많이 힘들었구나. 무슨 일 있었어?",
+    "question": "그렇다기보단...",
     "answerOptions": [
       {
-        "text": "일이 너무 많아서",
+        "text": "그렇다기보다? 그럼? 그럼 뭔데?",
         "nextQuestionId": 6,
         "loveAmount": 8
       },
       {
-        "text": "잠을 못 자서",
-        "nextQuestionId": 7,
-        "loveAmount": 7
+        "text": "진짜? 나 안보고 싶어? 그럼 나 늦게 들어간다?",
+        "nextQuestionId": 6,
+        "loveAmount": 5
       },
       {
-        "text": "네 상관 아니잖아",
-        "nextQuestionId": 12,
-        "loveAmount": -5
+        "text": "뭐야ㅠㅠ 나 안 보고 싶어?",
+        "nextQuestionId": 5,
+        "loveAmount": 10
       }
     ]
   },
   "5": {
     "questionId": 5,
-    "question": "좋겠다! 요즘 관심 있는 거 있어?",
+    "question": "그게 무슨 질문이야... ",
     "answerOptions": [
       {
-        "text": "운동이나 건강",
-        "nextQuestionId": 7,
-        "loveAmount": 13
+        "text": "혹시나 했지~ 형씨는 이런거 말 잘 안하잖아",
+        "nextQuestionId": null,
+        "loveAmount": 8,
+        "endMessage" : ["너무 늦지 않게 들어와.", "보고 싶어..."]
       },
       {
-        "text": "영화나 드라마",
-        "nextQuestionId": 8,
-        "loveAmount": 12
+        "text": "나 보고 싶어, 안 보고 싶어?",
+        "nextQuestionId": null,
+        "loveAmount": 12,
+        "endMessage" : ["...", "보고 싶어","그러니까 너무 늦지 않게 와..."]
       },
       {
-        "text": "너랑 얘기하기 싫어",
-        "nextQuestionId": 13,
-        "loveAmount": -4
+        "text": "진짜? 나 늦게 들어간다?",
+        "nextQuestionId": 6,
+        "loveAmount": 5
       }
     ]
   },
   "6": {
     "questionId": 6,
-    "question": "그렇구나. 최근에 기억에 남는 일 있어?",
+    "question": "조심해서 와. 참, 난 내일 아침 일찍 나갈거야",
     "answerOptions": [
       {
-        "text": "친구 만난 거",
-        "nextQuestionId": 8,
-        "loveAmount": 11
+        "text": "왜? 어디가?",
+        "nextQuestionId": 7,
+        "loveAmount": 5
       },
       {
-        "text": "맛있는 거 먹은 거",
-        "nextQuestionId": 9,
-        "loveAmount": 10
+        "text": "그래? 알겠어. 그럼 나 기다리지 말고 자!",
+        "nextQuestionId": null,
+        "loveAmount": 3,
+        "endMessage" : ["아.. 알겠어", "내일 아침에 보자"]
       },
       {
-        "text": "왜 자꾸 물어봐?",
-        "nextQuestionId": 13,
-        "loveAmount": -1
+        "text": "아... 그럼 나 깨우지 말아줘",
+        "nextQuestionId": null,
+        "loveAmount": -5,
+        "isEnd": true,
+        "endMessage" : "아.. 알겠어."
       }
     ]
   },
   "7": {
     "questionId": 7,
-    "question": "오 좋아! 앞으로 하고 싶은 거 있어?",
+    "question": "이번에 새 프로젝트 들어갈거야. 미팅을 한 번은 가야해",
     "answerOptions": [
       {
-        "text": "여행 가고 싶어",
-        "nextQuestionId": 9,
-        "loveAmount": 14
+        "text": "그럼 언제 끝나?",
+        "nextQuestionId": 8,
+        "loveAmount": 15
       },
       {
-        "text": "새로운 취미 찾고 싶어",
+        "text": "어디로 가? 나도 같이 갈래!",
         "nextQuestionId": 9,
-        "loveAmount": 13
+        "loveAmount": 18
       },
       {
-        "text": "그만 물어봐",
-        "nextQuestionId": 14,
-        "loveAmount": -2
+        "text": "알겠어! 조심히 다녀와 형씨",
+        "nextQuestionId": null,
+        "loveAmount": 8,
+        "endMessage" : ["응", "내일 저녁은 같이 먹자"]
       }
     ]
   },
   "8": {
     "questionId": 8,
-    "question": "재밌겠다! 마지막으로 하고 싶은 말 있어?",
+    "question": "음... 아마 점심쯤 끝날거야",
     "answerOptions": [
       {
-        "text": "수고했어!",
+        "text": "알겠어! 잘 다녀와",
         "nextQuestionId": null,
-        "loveAmount": 15
+        "loveAmount": 10,
+        "endMessage" : ["응", "조심히 들어와"]
       },
       {
-        "text": "재밌었어",
+        "text": "그럼 나랑 점심 먹자!",
         "nextQuestionId": null,
-        "loveAmount": 14
+        "loveAmount": 20,
+        "endMessage" : ["그래", "내가 전화할게", "그때 챙겨서 나와"]
       },
       {
-        "text": "이제 그만",
-        "nextQuestionId": 14,
-        "loveAmount": 2
+        "text": "난 내일도 약속이 있어ㅠㅠ",
+        "nextQuestionId": null,
+        "loveAmount": -10,
+        "endMessage" : ["아... 알겠어", "너무 무리하지 말고"]
       }
     ]
   },
   "9": {
     "questionId": 9,
-    "question": "멋지다! 대화 즐거웠어!",
+    "question": "꽤 거리가 있어. 아침에 일어나기 힘들잖아. 그냥 늦잠 자.",
     "answerOptions": [
       {
-        "text": "나도!",
+        "text": "싫어! 같이 갈래",
         "nextQuestionId": null,
-        "loveAmount": 15
+        "loveAmount": 15,
+        "endMessage" : ["괜찮겠어?", "그럼 내가 깨워줄게", "일찍 쉬게 얼른 들어와", "오랜만에 드라이브나 하자 [링크] 여기 카페가 유명하대" ]
       },
       {
-        "text": "고마워",
+        "text": "왜ㅠㅠ 나랑 가기 싫어?",
         "nextQuestionId": null,
-        "loveAmount": 12
+        "loveAmount": 20,
+        "endMessage" : ["아니...", "그럼 오늘 집에 일찍 와", "내가 깨워줄게", "미팅 장소 근처에 괜찮은 카페도 있어 [링크]" ]
       },
       {
-        "text": "됐어",
-        "nextQuestionId": 14,
-        "loveAmount": 1
-      }
-    ]
-  },
-  "10": {
-    "questionId": 10,
-    "question": "아... 미안, 기분 안 좋을 땐 그럴 수 있지.",
-    "answerOptions": [
-      {
-        "text": "미안, 기분이 안 좋아서",
-        "nextQuestionId": 4,
-        "loveAmount": 6
-      },
-      {
-        "text": "그냥 좀 내버려 둬",
+        "text": "ㅋㅋㅋㅋ 알겠어",
         "nextQuestionId": null,
-        "loveAmount": -4
-      }
-    ]
-  },
-  "11": {
-    "questionId": 11,
-    "question": "아 미안해, 그냥 친해지고 싶어서 물어봤어.",
-    "answerOptions": [
-      {
-        "text": "알겠어, 괜찮아",
-        "nextQuestionId": 6,
-        "loveAmount": 9
-      },
-      {
-        "text": "그래도 부담스러워",
-        "nextQuestionId": null,
-        "loveAmount": -2
-      }
-    ]
-  },
-  "12": {
-    "questionId": 12,
-    "question": "알겠어... 힘들 때는 혼자 있고 싶을 수 있지.",
-    "answerOptions": [
-      {
-        "text": "응, 조금만 쉴게",
-        "nextQuestionId": 7,
-        "loveAmount": 7
-      },
-      {
-        "text": "그래, 나중에 얘기하자",
-        "nextQuestionId": null,
-        "loveAmount": 3
-      }
-    ]
-  },
-  "13": {
-    "questionId": 13,
-    "question": "미안해... 내가 너무 많이 물어봤나 봐.",
-    "answerOptions": [
-      {
-        "text": "아니야, 괜찮아",
-        "nextQuestionId": 9,
-        "loveAmount": 10
-      },
-      {
-        "text": "그래, 좀 그랬어",
-        "nextQuestionId": null,
-        "loveAmount": 0
-      }
-    ]
-  },
-  "14": {
-    "questionId": 14,
-    "question": "알겠어. 대화해줘서 고마워!",
-    "answerOptions": [
-      {
-        "text": "응",
-        "nextQuestionId": null,
-        "loveAmount": 4
-      },
-      {
-        "text": "...",
-        "nextQuestionId": null,
-        "loveAmount": 0
+        "loveAmount": 5,
+        "endMessage" : ["응...", "그럼 너무 늦지 않게 들어와"]
       }
     ]
   }

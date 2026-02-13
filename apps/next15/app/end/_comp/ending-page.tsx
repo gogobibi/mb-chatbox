@@ -9,50 +9,12 @@ import { Progress } from '@/components/ui/progress';
 import { Heart, Home, RotateCcw, Trophy } from 'lucide-react';
 
 const BOT_AVATAR = '/m.jpg';
-const MAX_SCORE = 150;
+// 최대 점수: 1→2(+10) → 6(+8) → 7(+5) → 8(+14) → 최종(+20) = 57점
+const MAX_SCORE = 57;
 
-interface EndingType {
-  title: string;
-  message: string;
-  color: string;
-  gradient: string;
-}
 
-const ENDINGS: Record<string, EndingType> = {
-  perfect: {
-    title: '완벽한 엔딩',
-    message: '우리 정말 잘 통하는 것 같아! 다음에 또 얘기하자!',
-    color: 'text-pink-600',
-    gradient: 'from-pink-500 to-rose-500',
-  },
-  good: {
-    title: '좋은 엔딩',
-    message: '오늘 대화 즐거웠어! 앞으로도 잘 지내보자!',
-    color: 'text-blue-600',
-    gradient: 'from-blue-500 to-purple-500',
-  },
-  normal: {
-    title: '평범한 엔딩',
-    message: '대화해줘서 고마워. 다음에 또 보자!',
-    color: 'text-gray-600',
-    gradient: 'from-gray-500 to-slate-500',
-  },
-  bad: {
-    title: '아쉬운 엔딩',
-    message: '오늘은 좀 힘들었나 봐. 다음엔 더 잘 얘기해보자...',
-    color: 'text-slate-600',
-    gradient: 'from-slate-500 to-gray-600',
-  },
-};
 
-function getEndingType(score: number, maxScore: number): EndingType {
-  const percentage = (score / maxScore) * 100;
 
-  if (percentage >= 80) return ENDINGS.perfect;
-  if (percentage >= 60) return ENDINGS.good;
-  if (percentage >= 40) return ENDINGS.normal;
-  return ENDINGS.bad;
-}
 
 export function EndingPage() {
   const searchParams = useSearchParams();
@@ -63,8 +25,8 @@ export function EndingPage() {
   const [isNewRecord, setIsNewRecord] = useState(false);
 
   const finalScore = scoreParam ? parseInt(scoreParam, 10) : 0;
-  const ending = getEndingType(finalScore, MAX_SCORE);
   const percentage = Math.min((finalScore / MAX_SCORE) * 100, 100);
+  const isPink = finalScore > 0;
 
   useEffect(() => {
     // 로컬스토리지에서 최고 점수 읽기
@@ -97,22 +59,20 @@ export function EndingPage() {
     <div className="flex h-screen items-center justify-center bg-black">
       <div className="flex h-screen w-full max-w-[500px] flex-col bg-gradient-to-br from-white to-gray-50 shadow-xl overflow-hidden relative">
         {/* 배경 장식 */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className={`absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br ${ending.gradient} opacity-20 blur-3xl`}
-          />
-          <div
-            className={`absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br ${ending.gradient} opacity-20 blur-3xl`}
-          />
-        </div>
+        {isPink && (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 opacity-20 blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 opacity-20 blur-3xl" />
+          </div>
+        )}
 
         {/* 컨텐츠 */}
         <div className="relative flex-1 flex flex-col items-center justify-center p-8 space-y-8">
           {/* 캐릭터 아바타 */}
           <div className="relative">
-            <div
-              className={`absolute inset-0 rounded-full bg-gradient-to-br ${ending.gradient} opacity-30 blur-xl animate-pulse`}
-            />
+            {isPink && (
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 opacity-30 blur-xl animate-pulse" />
+            )}
             <Avatar className="h-32 w-32 border-4 border-white shadow-xl relative">
               <AvatarImage src={BOT_AVATAR} alt="마르코" />
               <AvatarFallback>마르코</AvatarFallback>
@@ -124,14 +84,6 @@ export function EndingPage() {
             )}
           </div>
 
-          {/* 엔딩 타입 */}
-          <div className="text-center space-y-2">
-            <h1 className={`text-3xl font-bold ${ending.color}`}>
-              {ending.title}
-            </h1>
-            <p className="text-base text-gray-600 max-w-xs">{ending.message}</p>
-          </div>
-
           {/* 애정도 표시 */}
           <div className="w-full max-w-xs space-y-4">
             <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 space-y-4">
@@ -140,16 +92,14 @@ export function EndingPage() {
                   <Heart
                     className={`w-5 h-5 ${isAnimating ? 'animate-pulse' : ''}`}
                     style={{
-                      color: ending.gradient.includes('pink')
-                        ? '#ec4899'
-                        : '#6b7280',
+                      color: isPink ? '#ec4899' : '#6b7280',
                     }}
                   />
                   <span className="text-sm font-semibold text-gray-700">
                     최종 애정도
                   </span>
                 </div>
-                <span className={`text-2xl font-bold ${ending.color}`}>
+                <span className={`text-2xl font-bold ${isPink ? 'text-pink-600' : 'text-gray-600'}`}>
                   {score}점
                 </span>
               </div>
@@ -194,12 +144,6 @@ export function EndingPage() {
           </div>
         </div>
 
-        {/* 하단 크레딧 */}
-        <div className="relative p-4 text-center border-t border-gray-200 bg-white/50 backdrop-blur-sm">
-          <p className="text-xs text-gray-500">
-            대화를 마쳤어요. 다음에 또 만나요! 👋
-          </p>
-        </div>
       </div>
     </div>
   );

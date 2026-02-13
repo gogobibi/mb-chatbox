@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { ChevronLeft } from 'lucide-react';
 import { IPhoneChatBubbleYou } from '@/components/chat/iphone-chat-bubble-you';
@@ -14,6 +15,7 @@ interface AnswerOption {
   text: string;
   nextQuestionId: number | null;
   loveAmount: number;
+  endMessage?: string | string[];
 }
 
 interface Question {
@@ -42,6 +44,7 @@ interface ChatPageProps {
 }
 
 export function ChatPage({ contentData }: ChatPageProps) {
+  const router = useRouter();
   const firstQuestion = contentData['1'];
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -54,8 +57,10 @@ export function ChatPage({ contentData }: ChatPageProps) {
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(firstQuestion);
   const [messageIdCounter, setMessageIdCounter] = useState(2);
   const [isTyping, setIsTyping] = useState(false);
+  const [showTypingAvatar, setShowTypingAvatar] = useState(true);
   const [isWaitingForNextOptions, setIsWaitingForNextOptions] = useState(false);
   const [loveScore, setLoveScore] = useState(0);
+  const [countdown, setCountdown] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -84,6 +89,7 @@ export function ChatPage({ contentData }: ChatPageProps) {
     setIsTyping(true);
 
     if (option.nextQuestionId !== null) {
+      // 다음 질문으로 진행
       // 0.5초 후: 타이핑 종료 + B 메시지 표시
       setTimeout(() => {
         setIsTyping(false);
@@ -111,15 +117,106 @@ export function ChatPage({ contentData }: ChatPageProps) {
       // 대화 종료 - 로컬스토리지에 점수 저장 및 엔딩 페이지로 이동
       setTimeout(() => {
         setIsTyping(false);
-        const endMessage: Message = {
-          id: messageIdCounter + 1,
-          text: '대화를 마칠게! 즐거웠어',
-          sender: 'bot',
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, endMessage]);
+
+        // endMessage가 있으면 표시, 없으면 바로 종료
+        if (option.endMessage) {
+          const messages = Array.isArray(option.endMessage)
+            ? option.endMessage
+            : [option.endMessage];
+
+          const currentMessageId = messageIdCounter + 1;
+
+          if (messages.length === 1) {
+            // 메시지가 1개일 때
+            setTimeout(() => {
+              setIsTyping(true);
+            }, 0);
+
+            setTimeout(() => {
+              setIsTyping(false);
+              const endMessage: Message = {
+                id: currentMessageId,
+                text: messages[0],
+                sender: 'bot',
+                timestamp: new Date(),
+              };
+              setMessages((prev) => [...prev, endMessage]);
+              setMessageIdCounter((prev) => prev + 1);
+            }, 500);
+          } else if (messages.length === 2) {
+            // 메시지가 2개일 때 - 망설임 효과
+            // 첫 번째 타이핑
+            setTimeout(() => {
+              setIsTyping(true);
+            }, 0);
+
+            // 첫 번째 메시지
+            setTimeout(() => {
+              setIsTyping(false);
+              const firstMessage: Message = {
+                id: currentMessageId,
+                text: messages[0],
+                sender: 'bot',
+                timestamp: new Date(),
+              };
+              setMessages((prev) => [...prev, firstMessage]);
+              setMessageIdCounter((prev) => prev + 1);
+            }, 500);
+
+            // 두 번째 타이핑 시작
+            setTimeout(() => {
+              setIsTyping(true);
+            }, 1300);
+
+            // 두 번째 타이핑 멈춤 (망설임)
+            setTimeout(() => {
+              setIsTyping(false);
+            }, 1800);
+
+            // 세 번째 타이핑 다시 시작
+            setTimeout(() => {
+              setIsTyping(true);
+            }, 2500);
+
+            // 두 번째 메시지
+            setTimeout(() => {
+              setIsTyping(false);
+              const secondMessage: Message = {
+                id: currentMessageId + 1,
+                text: messages[1],
+                sender: 'bot',
+                timestamp: new Date(),
+              };
+              setMessages((prev) => [...prev, secondMessage]);
+              setMessageIdCounter((prev) => prev + 1);
+            }, 3000);
+          } else {
+            // 메시지가 3개 이상일 때 - 순차 전송
+            messages.forEach((msgText, index) => {
+              // 타이핑 시작
+              setTimeout(() => {
+                setIsTyping(true);
+                // 첫 번째 메시지만 아바타 표시
+                setShowTypingAvatar(index === 0);
+              }, index * 1300);
+
+              // 메시지 전송 (타이핑 후 0.5초)
+              setTimeout(() => {
+                setIsTyping(false);
+                const msg: Message = {
+                  id: currentMessageId + index,
+                  text: msgText,
+                  sender: 'bot',
+                  timestamp: new Date(),
+                };
+                setMessages((prev) => [...prev, msg]);
+                setMessageIdCounter((prev) => prev + 1);
+              }, index * 1300 + 500);
+            });
+          }
+        }
+
         setCurrentQuestion(null);
-        setMessageIdCounter((prev) => prev + 1);
         setIsWaitingForNextOptions(false);
 
         // 로컬스토리지에 점수 저장
@@ -129,17 +226,41 @@ export function ChatPage({ contentData }: ChatPageProps) {
           localStorage.setItem('bestFinalScore', newLoveScore.toString());
         }
 
-        // 1초 후 엔딩 페이지로 이동
+        // 타이밍 계산
+        const messageCount = option.endMessage
+          ? (Array.isArray(option.endMessage) ? option.endMessage.length : 1)
+          : 0;
+
+        let allMessagesDelay = 0;
+        if (messageCount === 1) {
+          allMessagesDelay = 500; // 타이핑 + 메시지
+        } else if (messageCount === 2) {
+          allMessagesDelay = 3000; // 망설임 효과 포함
+        } else if (messageCount >= 3) {
+          allMessagesDelay = (messageCount - 1) * 1300 + 500; // 각 메시지 1.3초 간격
+        }
+
+        // 카운트다운 시작 (메시지 전송 완료 후)
+        if (messageCount > 0) {
+          setTimeout(() => {
+            setCountdown(3);
+            setTimeout(() => setCountdown(2), 1000);
+            setTimeout(() => setCountdown(1), 2000);
+          }, allMessagesDelay);
+        }
+
+        // 엔딩 페이지로 이동
+        const redirectDelay = messageCount > 0 ? allMessagesDelay + 3000 : 0;
         setTimeout(() => {
-          window.location.href = `/end?score=${newLoveScore}`;
-        }, 1000);
+          router.push(`/end?score=${newLoveScore}`);
+        }, redirectDelay);
       }, 500);
     }
   };
 
   return (
     <div className="flex h-screen items-center justify-center bg-black">
-      <div className="flex h-screen w-full max-w-[500px] flex-col bg-imessage-bg shadow-xl">
+      <div className="flex h-screen w-full max-w-[500px] flex-col bg-imessage-bg shadow-xl relative">
         {/* Header */}
         <div className="border-b border-imessage-separator bg-imessage-bg/95 backdrop-blur-sm">
           <div className="flex items-center justify-center h-[56px] relative">
@@ -185,7 +306,7 @@ export function ChatPage({ contentData }: ChatPageProps) {
 
             {/* Typing Indicator */}
             {isTyping && (
-              <TypingIndicator avatarSrc={BOT_AVATAR} avatarAlt="마르코" />
+              <TypingIndicator avatarSrc={BOT_AVATAR} avatarAlt="마르코" showAvatar={showTypingAvatar} />
             )}
           </div>
         </div>
@@ -203,6 +324,20 @@ export function ChatPage({ contentData }: ChatPageProps) {
               ))}
             </div>
           </div>
+        )}
+
+        {/* Countdown */}
+        {countdown !== null && (
+          <button
+            onClick={() => {
+              const currentScore = localStorage.getItem('currentFinalScore') || loveScore.toString();
+              router.push(`/end?score=${currentScore}`);
+            }}
+            className="absolute bottom-3 right-3 bg-gray-800/60 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs text-white font-medium hover:bg-gray-800/80 transition-colors cursor-pointer"
+          >
+            <span>skip</span>
+            <span>{countdown}</span>
+          </button>
         )}
       </div>
     </div>
