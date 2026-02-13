@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Heart, Home, RotateCcw, Trophy } from 'lucide-react';
+import { Heart, RotateCcw, Trophy } from 'lucide-react';
 
 const BOT_AVATAR = '/m.jpg';
 // 최대 점수: 1→3(+5) → 4(+10) → 5(+10) → 6(+5) → 7(+5) → 9(+18) → 최종(+20) = 73점
@@ -61,8 +61,8 @@ export function EndingPage() {
         {/* 배경 장식 */}
         {isPink && (
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 opacity-20 blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 opacity-20 blur-3xl" />
+            <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-200 to-rose-200 opacity-40 blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-200 to-rose-200 opacity-40 blur-3xl" />
           </div>
         )}
 
@@ -71,7 +71,7 @@ export function EndingPage() {
           {/* 캐릭터 아바타 */}
           <div className="relative">
             {isPink && (
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 opacity-30 blur-xl animate-pulse" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-200 to-rose-200 opacity-50 blur-xl animate-pulse" />
             )}
             <Avatar className="h-32 w-32 border-4 border-white shadow-xl relative">
               <AvatarImage src={BOT_AVATAR} alt="마르코" />
@@ -79,7 +79,7 @@ export function EndingPage() {
             </Avatar>
             {!isAnimating && percentage >= 80 && (
               <div className="absolute -top-2 -right-2 animate-bounce">
-                <Heart className="w-12 h-12 text-pink-500 fill-pink-500" />
+                <Heart className="w-12 h-12 text-pink-300 fill-pink-300" />
               </div>
             )}
           </div>
@@ -92,34 +92,34 @@ export function EndingPage() {
                   <Heart
                     className={`w-5 h-5 ${isAnimating ? 'animate-pulse' : ''}`}
                     style={{
-                      color: isPink ? '#ec4899' : '#6b7280',
+                      color: isPink ? '#f9a8d4' : '#6b7280',
                     }}
                   />
                   <span className="text-sm font-semibold text-gray-700">
                     최종 애정도
                   </span>
                 </div>
-                <span className={`text-2xl font-bold ${isPink ? 'text-pink-600' : 'text-gray-600'}`}>
+                <span className={`text-2xl font-bold ${isPink ? 'text-pink-400' : 'text-gray-600'}`}>
                   {score}점
                 </span>
               </div>
               <Progress
-                value={percentage}
+                value={Math.min((score / MAX_SCORE) * 100, 100)}
                 className="h-3 transition-all duration-500"
               />
             </div>
 
             {/* 최고 점수 표시 */}
             {bestScore > 0 && (
-              <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-4 border border-purple-100">
+              <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl p-4 border border-pink-100">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-purple-600" />
-                    <span className="text-sm font-medium text-purple-900">
+                    <Trophy className="w-4 h-4 text-pink-400" />
+                    <span className="text-sm font-medium text-pink-600">
                       최고 기록
                     </span>
                   </div>
-                  <span className="text-lg font-bold text-purple-700">
+                  <span className="text-lg font-bold text-pink-500">
                     {bestScore}점
                   </span>
                 </div>
@@ -129,16 +129,10 @@ export function EndingPage() {
 
           {/* 액션 버튼 */}
           <div className="flex gap-3 pt-4">
-            <Link href="/chat">
-              <Button variant="outline" className="gap-2">
+            <Link href="/">
+              <Button className="gap-2 bg-gradient-to-r from-pink-300 to-rose-300 hover:from-pink-400 hover:to-rose-400 text-white">
                 <RotateCcw className="w-4 h-4" />
                 다시 하기
-              </Button>
-            </Link>
-            <Link href="/">
-              <Button className="gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
-                <Home className="w-4 h-4" />
-                홈으로
               </Button>
             </Link>
           </div>
