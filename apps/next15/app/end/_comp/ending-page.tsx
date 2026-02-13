@@ -9,8 +9,8 @@ import { Progress } from '@/components/ui/progress';
 import { Heart, Home, RotateCcw, Trophy } from 'lucide-react';
 
 const BOT_AVATAR = '/m.jpg';
-// 최대 점수: 1→2(+10) → 6(+8) → 7(+5) → 8(+14) → 최종(+20) = 57점
-const MAX_SCORE = 57;
+// 최대 점수: 1→3(+5) → 4(+10) → 5(+10) → 6(+5) → 7(+5) → 9(+18) → 최종(+20) = 73점
+const MAX_SCORE = 73;
 
 
 
