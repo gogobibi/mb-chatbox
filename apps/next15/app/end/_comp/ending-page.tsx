@@ -1,0 +1,150 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Heart, Home, RotateCcw, Trophy } from 'lucide-react';
+
+const BOT_AVATAR = '/m.jpg';
+// 최대 점수: 1→2(+10) → 6(+8) → 7(+5) → 8(+14) → 최종(+20) = 57점
+const MAX_SCORE = 57;
+
+
+
+
+
+export function EndingPage() {
+  const searchParams = useSearchParams();
+  const scoreParam = searchParams.get('score');
+  const [score, setScore] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(true);
+  const [bestScore, setBestScore] = useState(0);
+  const [isNewRecord, setIsNewRecord] = useState(false);
+
+  const finalScore = scoreParam ? parseInt(scoreParam, 10) : 0;
+  const percentage = Math.min((finalScore / MAX_SCORE) * 100, 100);
+  const isPink = finalScore > 0;
+
+  useEffect(() => {
+    // 로컬스토리지에서 최고 점수 읽기
+    const storedBestScore = localStorage.getItem('bestFinalScore');
+    const best = storedBestScore ? parseInt(storedBestScore, 10) : 0;
+    setBestScore(best);
+    setIsNewRecord(finalScore >= best && finalScore > 0);
+
+    // 애정도 카운트업 애니메이션
+    const duration = 2000;
+    const steps = 60;
+    const increment = finalScore / steps;
+    let currentStep = 0;
+
+    const timer = setInterval(() => {
+      currentStep++;
+      if (currentStep >= steps) {
+        setScore(finalScore);
+        clearInterval(timer);
+        setIsAnimating(false);
+      } else {
+        setScore(Math.floor(increment * currentStep));
+      }
+    }, duration / steps);
+
+    return () => clearInterval(timer);
+  }, [finalScore]);
+
+  return (
+    <div className="flex h-screen items-center justify-center bg-black">
+      <div className="flex h-screen w-full max-w-[500px] flex-col bg-gradient-to-br from-white to-gray-50 shadow-xl overflow-hidden relative">
+        {/* 배경 장식 */}
+        {isPink && (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 opacity-20 blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 opacity-20 blur-3xl" />
+          </div>
+        )}
+
+        {/* 컨텐츠 */}
+        <div className="relative flex-1 flex flex-col items-center justify-center p-8 space-y-8">
+          {/* 캐릭터 아바타 */}
+          <div className="relative">
+            {isPink && (
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 opacity-30 blur-xl animate-pulse" />
+            )}
+            <Avatar className="h-32 w-32 border-4 border-white shadow-xl relative">
+              <AvatarImage src={BOT_AVATAR} alt="마르코" />
+              <AvatarFallback>마르코</AvatarFallback>
+            </Avatar>
+            {!isAnimating && percentage >= 80 && (
+              <div className="absolute -top-2 -right-2 animate-bounce">
+                <Heart className="w-12 h-12 text-pink-500 fill-pink-500" />
+              </div>
+            )}
+          </div>
+
+          {/* 애정도 표시 */}
+          <div className="w-full max-w-xs space-y-4">
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Heart
+                    className={`w-5 h-5 ${isAnimating ? 'animate-pulse' : ''}`}
+                    style={{
+                      color: isPink ? '#ec4899' : '#6b7280',
+                    }}
+                  />
+                  <span className="text-sm font-semibold text-gray-700">
+                    최종 애정도
+                  </span>
+                </div>
+                <span className={`text-2xl font-bold ${isPink ? 'text-pink-600' : 'text-gray-600'}`}>
+                  {score}점
+                </span>
+              </div>
+              <Progress
+                value={percentage}
+                className="h-3 transition-all duration-500"
+              />
+            </div>
+
+            {/* 최고 점수 표시 */}
+            {bestScore > 0 && (
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-4 border border-purple-100">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="w-4 h-4 text-purple-600" />
+                    <span className="text-sm font-medium text-purple-900">
+                      최고 기록
+                    </span>
+                  </div>
+                  <span className="text-lg font-bold text-purple-700">
+                    {bestScore}점
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 액션 버튼 */}
+          <div className="flex gap-3 pt-4">
+            <Link href="/chat">
+              <Button variant="outline" className="gap-2">
+                <RotateCcw className="w-4 h-4" />
+                다시 하기
+              </Button>
+            </Link>
+            <Link href="/">
+              <Button className="gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
+                <Home className="w-4 h-4" />
+                홈으로
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
