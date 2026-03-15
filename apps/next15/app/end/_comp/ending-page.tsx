@@ -7,16 +7,13 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Heart, RotateCcw, Trophy } from 'lucide-react';
+import { GameConfig } from '@/lib/games';
 
-const BOT_AVATAR = '/m.jpg';
-// 최대 점수: 1→3(+5) → 4(+10) → 5(+10) → 6(+5) → 7(+5) → 9(+18) → 최종(+20) = 73점
-const MAX_SCORE = 73;
+interface EndingPageProps {
+  gameConfig: GameConfig;
+}
 
-
-
-
-
-export function EndingPage() {
+export function EndingPage({ gameConfig }: EndingPageProps) {
   const searchParams = useSearchParams();
   const scoreParam = searchParams.get('score');
   const [score, setScore] = useState(0);
@@ -25,12 +22,13 @@ export function EndingPage() {
   const [isNewRecord, setIsNewRecord] = useState(false);
 
   const finalScore = scoreParam ? parseInt(scoreParam, 10) : 0;
-  const percentage = Math.min((finalScore / MAX_SCORE) * 100, 100);
+  const percentage = Math.min((finalScore / gameConfig.maxScore) * 100, 100);
   const isPink = finalScore > 0;
 
   useEffect(() => {
-    // 로컬스토리지에서 최고 점수 읽기
-    const storedBestScore = localStorage.getItem('bestFinalScore');
+    // 로컬스토리지에서 최고 점수 읽기 (gameId 네임스페이스)
+    const bestScoreKey = `bestFinalScore_${gameConfig.id}`;
+    const storedBestScore = localStorage.getItem(bestScoreKey);
     const best = storedBestScore ? parseInt(storedBestScore, 10) : 0;
     setBestScore(best);
     setIsNewRecord(finalScore >= best && finalScore > 0);
@@ -53,7 +51,7 @@ export function EndingPage() {
     }, duration / steps);
 
     return () => clearInterval(timer);
-  }, [finalScore]);
+  }, [finalScore, gameConfig.id]);
 
   return (
     <div className="flex h-screen items-center justify-center bg-black">
@@ -74,8 +72,8 @@ export function EndingPage() {
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-200 to-rose-200 opacity-50 blur-xl animate-pulse" />
             )}
             <Avatar className="h-32 w-32 border-4 border-white shadow-xl relative">
-              <AvatarImage src={BOT_AVATAR} alt="마르코" />
-              <AvatarFallback>마르코</AvatarFallback>
+              <AvatarImage src={gameConfig.botAvatar} alt={gameConfig.botName} />
+              <AvatarFallback>{gameConfig.botName}</AvatarFallback>
             </Avatar>
             {!isAnimating && percentage >= 80 && (
               <div className="absolute -top-2 -right-2 animate-bounce">
@@ -104,7 +102,7 @@ export function EndingPage() {
                 </span>
               </div>
               <Progress
-                value={Math.min((score / MAX_SCORE) * 100, 100)}
+                value={Math.min((score / gameConfig.maxScore) * 100, 100)}
                 className="h-3 transition-all duration-500"
               />
             </div>

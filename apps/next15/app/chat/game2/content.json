@@ -1,0 +1,26 @@
+{
+  "1": {
+    "questionId": 1,
+    "question": "안녕, 잘 지냈어?",
+    "answerOptions": [
+      {
+        "text": "응, 잘 지냈어!",
+        "nextQuestionId": null,
+        "loveAmount": 10,
+        "endMessage": "나도 잘 지냈어. 또 얘기하자!"
+      },
+      {
+        "text": "그냥 그랬어",
+        "nextQuestionId": null,
+        "loveAmount": 5,
+        "endMessage": "그렇구나... 다음엔 더 좋은 일 있길 바랄게"
+      },
+      {
+        "text": "[미노출]별로야",
+        "nextQuestionId": null,
+        "loveAmount": 0,
+        "endMessage": "아... 무슨 일 있었어? 괜찮아?"
+      }
+    ]
+  }
+}
