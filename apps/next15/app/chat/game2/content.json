@@ -1,25 +1,337 @@
 {
   "1": {
     "questionId": 1,
-    "question": "안녕, 잘 지냈어?",
+    "question": "나 오늘 늦어, 브렛. 저녁 먼저 먹어.",
     "answerOptions": [
       {
-        "text": "응, 잘 지냈어!",
+        "text": "어? 왜?",
+        "nextQuestionId": 2,
+        "loveAmount": 5,
+        "endMessage": null
+      },
+      {
+        "text": "무슨 일 있어?",
+        "nextQuestionId": 2,
+        "loveAmount": 5,
+        "endMessage": null
+      },
+      {
+        "text": "오늘 저녁 같이 먹자며ㅠㅠ 많이 늦어?",
+        "nextQuestionId": 4,
+        "loveAmount": 10,
+        "endMessage": null
+      }
+    ]
+  },
+  "2": {
+    "questionId": 2,
+    "question": "오늘 마무리해야 하는 작업이 있어 😔",
+    "answerOptions": [
+      {
+        "text": "이런... 어쩔 수 없지...",
+        "nextQuestionId": 3,
+        "loveAmount": 5,
+        "endMessage": null
+      },
+      {
+        "text": "오늘 저녁 같이 먹는다고 해서, 요리했는데...",
+        "nextQuestionId": 4,
+        "loveAmount": 15,
+        "endMessage": null
+      },
+      {
+        "text": "무슨 일인데 이렇게 늦어?",
+        "nextQuestionId": 7,
+        "loveAmount": 10,
+        "endMessage": null
+      }
+    ]
+  },
+  "3": {
+    "questionId": 3,
+    "question": ["오늘 못 들어갈 수도 있어..", "기다리지 말고 자"],
+    "answerOptions": [
+      {
+        "text": "알겠어, 그럼. 너무 무리하지마.",
         "nextQuestionId": null,
         "loveAmount": 10,
-        "endMessage": "나도 잘 지냈어. 또 얘기하자!"
+        "endMessage": [
+          "응.",
+          "잘자, 브렛",
+          "오늘 저녁 같이 먹자는 약속 못 지켜서 미안해."
+        ]
       },
       {
-        "text": "그냥 그랬어",
+        "text": "늦게라도 들어와. 기다릴게.",
+        "nextQuestionId": 5,
+        "loveAmount": 5,
+        "endMessage": null
+      },
+      {
+        "text": "뭐? 무슨 일인데 집에 안 들어와?",
+        "nextQuestionId": 7,
+        "loveAmount": 0,
+        "endMessage": null
+      }
+    ]
+  },
+  "4": {
+    "questionId": 4,
+    "question": "아...",
+    "answerOptions": [
+      {
+        "text": "괜찮아. 나 혼자 먹으면 되지",
+        "nextQuestionId": 5,
+        "loveAmount": 10,
+        "endMessage": null
+      },
+      {
+        "text": "괜찮아. 어쩔 수 없지, 뭐",
+        "nextQuestionId": 6,
+        "loveAmount": 15,
+        "endMessage": null
+      },
+      {
+        "text": "진짜 저녁 같이 못 먹어?",
+        "nextQuestionId": null,
+        "loveAmount": 20,
+        "endMessage": [
+          "잠깐만",
+          "...",
+          "나 많이 늦을 것 같은데, 괜찮아?",
+          "음식 다 식을 것 같은데...",
+          "먼저 먹고 있어",
+          "최대한 빨리 들어갈게",
+          "8시 반에나 도착할 것 같아"
+        ]
+      }
+    ]
+  },
+  "5": {
+    "questionId": 5,
+    "question": [
+      "...",
+      "아무리 일러도 12시는 되어야 해",
+      "그때까지 안 먹을 수는 없잖아.",
+      "브렛, 배 안 고파?",
+      "저녁 같이 먹자는 약속 못지킨 건 미안해."
+    ],
+    "answerOptions": [
+      {
+        "text": "조금 서운하네..",
+        "nextQuestionId": 8,
+        "loveAmount": -5,
+        "endMessage": null
+      },
+      {
+        "text": "어쩔 수 없지. 알겠어.",
         "nextQuestionId": null,
         "loveAmount": 5,
-        "endMessage": "그렇구나... 다음엔 더 좋은 일 있길 바랄게"
+        "endMessage": ["응", "내일 봐, 브렛", "😭"]
       },
       {
-        "text": "[미노출]별로야",
+        "text": "더 일찍은 못 와?",
         "nextQuestionId": null,
+        "loveAmount": 10,
+        "endMessage": [
+          "...",
+          "잠깐만..",
+          "팀원한테 얘기했어",
+          "9시에 갈 수 있어.",
+          "저녁은 먼저 먹어 브렛",
+          "하던 것만 끝마치고 갈게"
+        ]
+      }
+    ]
+  },
+  "6": {
+    "questionId": 6,
+    "question": [
+      "응.",
+      "잘자, 브렛",
+      "오늘 저녁 같이 먹자는 약속 못 지켜서 미안해.",
+      "아, 혹시 내일 시간 돼? 저녁 같이 먹자"
+    ],
+    "answerOptions": [
+      {
+        "text": "오~ 내일은 나 바람 안 맞히나? ㅎㅎ",
+        "nextQuestionId": 8,
+        "loveAmount": 10,
+        "endMessage": null
+      },
+      {
+        "text": "아니, 내일은 시간 안돼",
+        "nextQuestionId": null,
+        "loveAmount": 5,
+        "endMessage": [
+          "아...",
+          "알겠어",
+          "모레는 가능해?",
+          "오늘만 지나면 나 여유 있는데",
+          "브렛은 바쁘려나?"
+        ]
+      },
+      {
+        "text": "그래, 내일 같이 먹자",
+        "nextQuestionId": null,
+        "loveAmount": 5,
+        "endMessage": [
+          "응",
+          "내일은 꼭 일찍 갈게",
+          "프로젝트 오늘 내로 끝나니까",
+          "내일 봐, 브렛",
+          "😍"
+        ]
+      }
+    ]
+  },
+  "7": {
+    "questionId": 7,
+    "question": [
+      "팀 프로젝트야",
+      "내일까지 제출 기한이야",
+      "그런데 오늘 주제를 바꾼대",
+      "🤯"
+    ],
+    "answerOptions": [
+      {
+        "text": "헉... 화이팅! 힘내!",
+        "nextQuestionId": null,
+        "loveAmount": 5,
+        "endMessage": [
+          "응",
+          "빨리하고 갈게",
+          "최대한 빨리 하면 집에 갈 수 있을거야",
+          "아침 같이 먹을 수 있게 빨리 해볼게"
+        ]
+      },
+      {
+        "text": "헐... 오늘 내로 다 할 수 있어?",
+        "nextQuestionId": null,
+        "loveAmount": 10,
+        "endMessage": [
+          "응 ㅎㅎ",
+          "브렛이랑 저녁은 못 먹겠지만...",
+          "🤯",
+          "브렛이랑 저녁을 더 먹고 싶어",
+          "팀원들이 다 엉망이야",
+          "얼른 끝내고 갈게",
+          "🏠"
+        ]
+      },
+      {
+        "text": "설마 오늘도 잠 안 잘거야? 그제도 안 잔 거 아니었어?",
+        "nextQuestionId": 9,
+        "loveAmount": 20,
+        "endMessage": null
+      }
+    ]
+  },
+  "8": {
+    "questionId": 8,
+    "question": [
+      "앞으로 약속 무조건 지킬거야",
+      "팀원들이 잘못한거라고",
+      "난 오늘 브렛이랑 저녁 먹으려고 그제 밤도 샜단 말이야",
+      "😬",
+      "내일 꼭 같이 저녁 먹자"
+    ],
+    "answerOptions": [
+      {
+        "text": "ㅋㅋㅋ 알겠어. 화이팅해!",
+        "nextQuestionId": null,
+        "loveAmount": 10,
+        "endMessage": ["응", "푹 쉬고 있어!"]
+      },
+      {
+        "text": "그제도 잠을 안 잤어?",
+        "nextQuestionId": 9,
+        "loveAmount": 5,
+        "endMessage": null
+      },
+      {
+        "text": "믿을 수가 있어야지...",
+        "nextQuestionId": 10,
         "loveAmount": 0,
-        "endMessage": "아... 무슨 일 있었어? 괜찮아?"
+        "endMessage": null
+      }
+    ]
+  },
+  "9": {
+    "questionId": 9,
+    "question": [
+      "아...",
+      "그래도 어제 잘 잤어",
+      "괜찮아",
+      "오늘이면 끝나는데, 뭐",
+      "내일 일찍 자야지"
+    ],
+    "answerOptions": [
+      {
+        "text": "어려서 그런가, 체력이 좋네 ㅎㅎ",
+        "nextQuestionId": null,
+        "loveAmount": 10,
+        "endMessage": ["그냥 체력이 좋은거야", "어려서 그런게 아니고!"]
+      },
+      {
+        "text": "왜 그렇게 잠을 안 자. 건강 해치게",
+        "nextQuestionId": null,
+        "loveAmount": 15,
+        "endMessage": [
+          "이것만 끝나면 잘거야...",
+          "그래도 예전보다 많이 자",
+          "브렛이랑 처음 봤을 때보다 많이 자는걸?",
+          "😊",
+          "....",
+          "내일은 브렛이랑 같이 잘래",
+          "나랑 같이 자줄거지?"
+        ]
+      },
+      {
+        "text": "마르코. 너 오늘 밤 새지 말고 들어와. 알겠어?",
+        "nextQuestionId": null,
+        "loveAmount": 15,
+        "endMessage": [
+          "...",
+          "잠깐만..",
+          "팀원한테 얘기했어",
+          "9시에 갈 수 있어.",
+          "그래도 집에서 작업 해야되는데...",
+          "집에서 하는건 봐줄거지?"
+        ]
+      }
+    ]
+  },
+  "10": {
+    "questionId": 10,
+    "question": [
+      "...",
+      "나 삼십분 뒤에 집에 도착해",
+      "아직 저녁 안 먹었지?",
+      "나 기다려"
+    ],
+    "answerOptions": [
+      {
+        "text": "어? 아니야, 마르코. 농담이었어;;",
+        "nextQuestionId": null,
+        "loveAmount": 5,
+        "endMessage": ["...", "다 왔어. 저녁 같이 먹자, 브렛"]
+      },
+      {
+        "text": "어? 프로젝트는 괜찮아?",
+        "nextQuestionId": null,
+        "loveAmount": 10,
+        "endMessage": ["응", "그냥 집에서 하면 돼", "다 얘기했어"]
+      },
+      {
+        "text": "뭐야~ 집에 올 수 있는거였네?",
+        "nextQuestionId": null,
+        "loveAmount": -20,
+        "endMessage": [
+          "아닌데...",
+          "아냐, 브렛이랑 저녁 먹을래",
+          "조금 이따 봐"
+        ]
       }
     ]
   }

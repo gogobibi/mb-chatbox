@@ -21,7 +21,7 @@ interface AnswerOption {
 
 interface Question {
   questionId: number;
-  question: string;
+  question: string | string[];
   answerOptions: AnswerOption[];
 }
 
@@ -46,10 +46,13 @@ interface ChatPageProps {
 export function ChatPage({ contentData, gameConfig }: ChatPageProps) {
   const router = useRouter();
   const firstQuestion = contentData['1'];
+  const firstQuestionTexts = Array.isArray(firstQuestion.question)
+    ? firstQuestion.question
+    : [firstQuestion.question];
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: firstQuestion.question,
+      text: firstQuestionTexts[0],
       sender: 'bot',
       timestamp: new Date(),
     },
@@ -58,7 +61,7 @@ export function ChatPage({ contentData, gameConfig }: ChatPageProps) {
   const [messageIdCounter, setMessageIdCounter] = useState(2);
   const [isTyping, setIsTyping] = useState(false);
   const [showTypingAvatar, setShowTypingAvatar] = useState(true);
-  const [isWaitingForNextOptions, setIsWaitingForNextOptions] = useState(false);
+  const [isWaitingForNextOptions, setIsWaitingForNextOptions] = useState(firstQuestionTexts.length > 1);
   const [loveScore, setLoveScore] = useState(0);
   const [countdown, setCountdown] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -68,6 +71,37 @@ export function ChatPage({ contentData, gameConfig }: ChatPageProps) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isTyping]);
+
+  // 첫 질문이 배열일 때 순차 표시
+  useEffect(() => {
+    if (firstQuestionTexts.length > 1) {
+      firstQuestionTexts.slice(1).forEach((text, index) => {
+        setTimeout(() => {
+          setIsTyping(true);
+          setShowTypingAvatar(false);
+        }, index * 1300);
+
+        setTimeout(() => {
+          setIsTyping(false);
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: index + 2,
+              text,
+              sender: 'bot',
+              timestamp: new Date(),
+            },
+          ]);
+        }, index * 1300 + 500);
+      });
+
+      setTimeout(() => {
+        setMessageIdCounter(firstQuestionTexts.length + 1);
+        setIsWaitingForNextOptions(false);
+      }, (firstQuestionTexts.length - 1) * 1300 + 1000);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAnswerClick = (option: AnswerOption) => {
     // 애정도 업데이트
@@ -93,29 +127,40 @@ export function ChatPage({ contentData, gameConfig }: ChatPageProps) {
 
     if (option.nextQuestionId !== null) {
       // 다음 질문으로 진행
-      // 0.5초 후: 타이핑 종료 + B 메시지 표시
-      setTimeout(() => {
-        setIsTyping(false);
-        const nextQuestion = contentData[
-          option.nextQuestionId!.toString()
-        ];
-        if (nextQuestion) {
-          const botMessage: Message = {
-            id: messageIdCounter + 1,
-            text: nextQuestion.question,
-            sender: 'bot',
-            timestamp: new Date(),
-          };
-          setMessages((prev) => [...prev, botMessage]);
-          setCurrentQuestion(nextQuestion);
-          setMessageIdCounter((prev) => prev + 1);
-        }
-      }, 500);
+      const nextQuestion = contentData[option.nextQuestionId!.toString()];
+      if (nextQuestion) {
+        const questionTexts = Array.isArray(nextQuestion.question)
+          ? nextQuestion.question
+          : [nextQuestion.question];
+        const startId = messageIdCounter + 1;
 
-      // 1.0초 후: 선택지 표시
-      setTimeout(() => {
-        setIsWaitingForNextOptions(false);
-      }, 1000);
+        questionTexts.forEach((text, index) => {
+          setTimeout(() => {
+            setIsTyping(true);
+            setShowTypingAvatar(index === 0);
+          }, index * 1300);
+
+          setTimeout(() => {
+            setIsTyping(false);
+            const botMessage: Message = {
+              id: startId + index,
+              text,
+              sender: 'bot',
+              timestamp: new Date(),
+            };
+            setMessages((prev) => [...prev, botMessage]);
+            if (index === questionTexts.length - 1) {
+              setCurrentQuestion(nextQuestion);
+              setMessageIdCounter((prev) => prev + questionTexts.length);
+            }
+          }, index * 1300 + 500);
+        });
+
+        // 선택지 표시
+        setTimeout(() => {
+          setIsWaitingForNextOptions(false);
+        }, (questionTexts.length - 1) * 1300 + 1000);
+      }
     } else {
       // 대화 종료 - 로컬스토리지에 점수 저장 및 엔딩 페이지로 이동
       setTimeout(() => {
