@@ -16,7 +16,7 @@ interface AnswerOption {
   text: string;
   nextQuestionId: number | null;
   loveAmount: number;
-  endMessage?: string | string[];
+  endMessage?: string | string[] | null;
 }
 
 interface Question {
