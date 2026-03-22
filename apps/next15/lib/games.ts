@@ -22,6 +22,6 @@ export const GAMES: GameConfig[] = [
     userCharName: "브렛",
     botAvatar: "/m-2.jpg",
     userAvatar: "/b-30.png",
-    maxScore: 100,
+    maxScore: 65,
   },
 ];
