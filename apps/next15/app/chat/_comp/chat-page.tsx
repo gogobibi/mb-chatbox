@@ -10,17 +10,18 @@ import { IPhoneChatBubbleMe } from '@/components/chat/iphone-chat-bubble-me';
 import { IPhoneChatOption } from '@/components/chat/iphone-chat-option';
 import { TypingIndicator } from '@/components/chat/typing-indicator';
 import { LoveMeter } from '@/components/chat/love-meter';
+import { GameConfig } from '@/lib/games';
 
 interface AnswerOption {
   text: string;
   nextQuestionId: number | null;
   loveAmount: number;
-  endMessage?: string | string[];
+  endMessage?: string | string[] | null;
 }
 
 interface Question {
   questionId: number;
-  question: string;
+  question: string | string[];
   answerOptions: AnswerOption[];
 }
 
@@ -35,21 +36,23 @@ type ContentData = {
   [key: string]: Question;
 };
 
-const BOT_AVATAR = '/m.jpg';
-const USER_AVATAR = '/b.png';
 const MAX_LOVE_SCORE = 150;
 
 interface ChatPageProps {
   contentData: ContentData;
+  gameConfig: GameConfig;
 }
 
-export function ChatPage({ contentData }: ChatPageProps) {
+export function ChatPage({ contentData, gameConfig }: ChatPageProps) {
   const router = useRouter();
   const firstQuestion = contentData['1'];
+  const firstQuestionTexts = Array.isArray(firstQuestion.question)
+    ? firstQuestion.question
+    : [firstQuestion.question];
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: firstQuestion.question,
+      text: firstQuestionTexts[0],
       sender: 'bot',
       timestamp: new Date(),
     },
@@ -58,7 +61,7 @@ export function ChatPage({ contentData }: ChatPageProps) {
   const [messageIdCounter, setMessageIdCounter] = useState(2);
   const [isTyping, setIsTyping] = useState(false);
   const [showTypingAvatar, setShowTypingAvatar] = useState(true);
-  const [isWaitingForNextOptions, setIsWaitingForNextOptions] = useState(false);
+  const [isWaitingForNextOptions, setIsWaitingForNextOptions] = useState(firstQuestionTexts.length > 1);
   const [loveScore, setLoveScore] = useState(0);
   const [countdown, setCountdown] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -69,19 +72,53 @@ export function ChatPage({ contentData }: ChatPageProps) {
     }
   }, [messages, isTyping]);
 
+  // 첫 질문이 배열일 때 순차 표시
+  useEffect(() => {
+    if (firstQuestionTexts.length > 1) {
+      firstQuestionTexts.slice(1).forEach((text, index) => {
+        setTimeout(() => {
+          setIsTyping(true);
+          setShowTypingAvatar(false);
+        }, index * 1300);
+
+        setTimeout(() => {
+          setIsTyping(false);
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: index + 2,
+              text,
+              sender: 'bot',
+              timestamp: new Date(),
+            },
+          ]);
+        }, index * 1300 + 500);
+      });
+
+      setTimeout(() => {
+        setMessageIdCounter(firstQuestionTexts.length + 1);
+        setIsWaitingForNextOptions(false);
+      }, (firstQuestionTexts.length - 1) * 1300 + 1000);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleAnswerClick = (option: AnswerOption) => {
     // 애정도 업데이트
     const newLoveScore = Math.max(0, loveScore + option.loveAmount);
     setLoveScore(newLoveScore);
 
-    // 사용자 메시지 추가
-    const userMessage: Message = {
-      id: messageIdCounter,
-      text: option.text,
-      sender: 'user',
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, userMessage]);
+    // 사용자 메시지 추가 ([미노출] 태그가 없을 때만 말풍선 표시)
+    const isHidden = option.text.includes('[미노출]');
+    if (!isHidden) {
+      const userMessage: Message = {
+        id: messageIdCounter,
+        text: option.text,
+        sender: 'user',
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, userMessage]);
+    }
     setMessageIdCounter((prev) => prev + 1);
 
     // 선택지 숨기고 타이핑 시작
@@ -90,29 +127,40 @@ export function ChatPage({ contentData }: ChatPageProps) {
 
     if (option.nextQuestionId !== null) {
       // 다음 질문으로 진행
-      // 0.5초 후: 타이핑 종료 + B 메시지 표시
-      setTimeout(() => {
-        setIsTyping(false);
-        const nextQuestion = contentData[
-          option.nextQuestionId!.toString()
-        ];
-        if (nextQuestion) {
-          const botMessage: Message = {
-            id: messageIdCounter + 1,
-            text: nextQuestion.question,
-            sender: 'bot',
-            timestamp: new Date(),
-          };
-          setMessages((prev) => [...prev, botMessage]);
-          setCurrentQuestion(nextQuestion);
-          setMessageIdCounter((prev) => prev + 1);
-        }
-      }, 500);
+      const nextQuestion = contentData[option.nextQuestionId!.toString()];
+      if (nextQuestion) {
+        const questionTexts = Array.isArray(nextQuestion.question)
+          ? nextQuestion.question
+          : [nextQuestion.question];
+        const startId = messageIdCounter + 1;
 
-      // 1.0초 후: 선택지 표시
-      setTimeout(() => {
-        setIsWaitingForNextOptions(false);
-      }, 1000);
+        questionTexts.forEach((text, index) => {
+          setTimeout(() => {
+            setIsTyping(true);
+            setShowTypingAvatar(index === 0);
+          }, index * 1300);
+
+          setTimeout(() => {
+            setIsTyping(false);
+            const botMessage: Message = {
+              id: startId + index,
+              text,
+              sender: 'bot',
+              timestamp: new Date(),
+            };
+            setMessages((prev) => [...prev, botMessage]);
+            if (index === questionTexts.length - 1) {
+              setCurrentQuestion(nextQuestion);
+              setMessageIdCounter((prev) => prev + questionTexts.length);
+            }
+          }, index * 1300 + 500);
+        });
+
+        // 선택지 표시
+        setTimeout(() => {
+          setIsWaitingForNextOptions(false);
+        }, (questionTexts.length - 1) * 1300 + 1000);
+      }
     } else {
       // 대화 종료 - 로컬스토리지에 점수 저장 및 엔딩 페이지로 이동
       setTimeout(() => {
@@ -219,11 +267,11 @@ export function ChatPage({ contentData }: ChatPageProps) {
         setCurrentQuestion(null);
         setIsWaitingForNextOptions(false);
 
-        // 로컬스토리지에 점수 저장
-        localStorage.setItem('currentFinalScore', newLoveScore.toString());
-        const bestScore = localStorage.getItem('bestFinalScore');
+        // 로컬스토리지에 점수 저장 (gameId 네임스페이스)
+        const bestScoreKey = `bestFinalScore_${gameConfig.id}`;
+        const bestScore = localStorage.getItem(bestScoreKey);
         if (!bestScore || newLoveScore > parseInt(bestScore, 10)) {
-          localStorage.setItem('bestFinalScore', newLoveScore.toString());
+          localStorage.setItem(bestScoreKey, newLoveScore.toString());
         }
 
         // 타이밍 계산
@@ -252,7 +300,7 @@ export function ChatPage({ contentData }: ChatPageProps) {
         // 엔딩 페이지로 이동
         const redirectDelay = messageCount > 0 ? allMessagesDelay + 3000 : 0;
         setTimeout(() => {
-          router.push(`/end?score=${newLoveScore}`);
+          router.push(`/end/${gameConfig.id}?score=${newLoveScore}`);
         }, redirectDelay);
       }, 500);
     }
@@ -271,10 +319,10 @@ export function ChatPage({ contentData }: ChatPageProps) {
             </Link>
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={BOT_AVATAR} alt="마르코" />
-                <AvatarFallback>마르코</AvatarFallback>
+                <AvatarImage src={gameConfig.botAvatar} alt={gameConfig.botName} />
+                <AvatarFallback>{gameConfig.botName}</AvatarFallback>
               </Avatar>
-              <span className="text-[17px] font-semibold text-imessage-text-dark">마르코</span>
+              <span className="text-[17px] font-semibold text-imessage-text-dark">{gameConfig.botName}</span>
             </div>
           </div>
           {/* 애정도 프로그레스 바 */}
@@ -290,23 +338,23 @@ export function ChatPage({ contentData }: ChatPageProps) {
                   key={message.id}
                   message={message.text}
                   timestamp={message.timestamp}
-                  avatarSrc={BOT_AVATAR}
-                  avatarAlt="마르코"
+                  avatarSrc={gameConfig.botAvatar}
+                  avatarAlt={gameConfig.botName}
                 />
               ) : (
                 <IPhoneChatBubbleMe
                   key={message.id}
                   message={message.text}
                   timestamp={message.timestamp}
-                  avatarSrc={USER_AVATAR}
-                  avatarAlt="브렛"
+                  avatarSrc={gameConfig.userAvatar}
+                  avatarAlt={gameConfig.userCharName}
                 />
               )
             )}
 
             {/* Typing Indicator */}
             {isTyping && (
-              <TypingIndicator avatarSrc={BOT_AVATAR} avatarAlt="마르코" showAvatar={showTypingAvatar} />
+              <TypingIndicator avatarSrc={gameConfig.botAvatar} avatarAlt={gameConfig.botName} showAvatar={showTypingAvatar} />
             )}
           </div>
         </div>
@@ -318,7 +366,7 @@ export function ChatPage({ contentData }: ChatPageProps) {
               {currentQuestion.answerOptions.map((option, index) => (
                 <IPhoneChatOption
                   key={index}
-                  text={option.text}
+                  text={option.text.replace('[미노출]', '').trim()}
                   onClick={() => handleAnswerClick(option)}
                 />
               ))}
@@ -330,8 +378,7 @@ export function ChatPage({ contentData }: ChatPageProps) {
         {countdown !== null && (
           <button
             onClick={() => {
-              const currentScore = localStorage.getItem('currentFinalScore') || loveScore.toString();
-              router.push(`/end?score=${currentScore}`);
+              router.push(`/end/${gameConfig.id}?score=${loveScore}`);
             }}
             className="absolute bottom-3 right-3 bg-gray-800/60 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs text-white font-medium hover:bg-gray-800/80 transition-colors cursor-pointer"
           >
