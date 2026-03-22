@@ -36,7 +36,6 @@ type ContentData = {
   [key: string]: Question;
 };
 
-const MAX_LOVE_SCORE = 150;
 
 interface ChatPageProps {
   contentData: ContentData;
@@ -326,7 +325,7 @@ export function ChatPage({ contentData, gameConfig }: ChatPageProps) {
             </div>
           </div>
           {/* 애정도 프로그레스 바 */}
-          <LoveMeter currentScore={loveScore} maxScore={MAX_LOVE_SCORE} />
+          <LoveMeter currentScore={loveScore} maxScore={gameConfig.maxScore} />
         </div>
 
         {/* Messages Area */}

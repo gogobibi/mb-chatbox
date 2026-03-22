@@ -21,7 +21,7 @@ export const GAMES: GameConfig[] = [
     botName: "🐶",
     userCharName: "브렛",
     botAvatar: "/m-2.jpg",
-    userAvatar: "/b.png",
-    maxScore: 100,
+    userAvatar: "/b-30.png",
+    maxScore: 65,
   },
 ];
